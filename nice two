@@ -1,0 +1,30 @@
+void printw()
+{
+	ifstream ifs;
+	char buf[32], bufh[32], BHcharging[64] = {0};
+	FILE *fp;
+	char buffers[80], chh;
+	//shell简单方便偷工减料，不占用资源
+	fp = popen("sed '/^Start_charging=/!d;s/.*=//' /sdcard/Android/BHcharging/files.conf", "r");
+	if (fp)
+	{
+		int ret = fread(BHcharging, 1, sizeof(BHcharging) - 1, fp);
+		if (ret > 0)
+		{
+			Start_charging = BHcharging;
+		}
+		pclose(fp);
+	}
+	fp = popen("sed '/^Stop_charging=/!d;s/.*=//' /sdcard/Android/BHcharging/files.conf", "r");
+	if (fp)
+	{
+		int ret = fread(BHcharging, 1, sizeof(BHcharging) - 1, fp);
+		if (ret > 0)
+		{
+			Stop_charging = BHcharging;
+		}
+		pclose(fp);
+	}
+	ifs.close();
+	for (;;)
+	{
