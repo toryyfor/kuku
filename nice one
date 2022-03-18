@@ -1,0 +1,25 @@
+char *bufferdir = getcwd(NULL, 0);
+using namespace std;
+FILE *popen(const char *command, const char *type);
+int pclose(FILE *stream);
+string Start_charging, Stop_charging;
+
+int hctem(const char *hanstr)
+{
+	return system(hanstr);
+}
+
+void Logout(const char *pszLogFile, const char *pszLog)
+{
+	char tmp[64];
+	if (NULL == pszLogFile || NULL == pszLog)
+		return;
+	FILE *pFile = fopen(pszLogFile, "ab+");
+	if (pFile)
+	{
+		time_t t = time(0);
+		strftime(tmp, sizeof(tmp), "\n%Y/%m/%d %X ", localtime(&t));
+		fwrite(tmp, 1, strlen(tmp), pFile);
+		fwrite((void *)pszLog, 1, strlen(pszLog), pFile);
+		fclose(pFile);
+	}
